@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  netdata:
+    image: netdata/netdata:stable
+    container_name: netdata
+    hostname: netdata-mkp-lol
+    restart: unless-stopped
+    ports:
+      - "19999:19999"
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - apparmor:unconfined
+    environment:
+      - NETDATA_CLAIM_TOKEN=
+      - NETDATA_CLAIM_URL=
+      - NETDATA_CLAIM_ROOMS=
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /etc/os-release:/host/etc/os-release:ro
+      - netdata_lib:/var/lib/netdata
+      - netdata_cache:/var/cache/netdata
+      - netdata_logs:/var/log/netdata
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+volumes:
+  netdata_lib:
+  netdata_cache:
+  netdata_logs:
